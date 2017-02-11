@@ -46,7 +46,10 @@
       }
     },
     sliceModels(cachedResponse) {
-      return cachedResponse.result.slice(0, 120)
+      return cachedResponse.result.slice(0, 120).map((model) => {
+        model.preview = model.preview.replace('http:', 'https:')
+        return model
+      })
     }
   })
   </script>
