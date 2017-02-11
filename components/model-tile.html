@@ -1,0 +1,42 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-card/paper-card.html">
+<dom-module id="model-tile">
+  <template>
+    <style>
+      paper-card {
+        display: inline-block;
+        min-width: 150px;
+        max-width: 25vw;
+
+        margin-bottom: 10px;
+        margin-right: 10px;
+      }
+
+      .card-header {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      @media (min-width: 600px) {
+        paper-card {
+          max-width: 15vw;
+        }
+      }
+    </style>
+    <paper-card image="[[previewUrl]]">
+      <div class="card-content">
+        <div class="card-header">[[displayName]]</div>
+      </div>
+    </paper-card>
+  </template>
+  <script>
+  Polymer({
+    is: 'model-tile',
+    properties: {
+      displayName: String,
+      previewUrl: String
+    }
+  })
+  </script>
+</dom-module>

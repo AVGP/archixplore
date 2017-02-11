@@ -1,0 +1,53 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/app-storage/app-indexeddb-mirror/app-indexeddb-mirror.html">
+
+<link rel="import" href="../components/model-tile.html">
+
+<dom-module id="model-list">
+  <template>
+    <style>
+      :host {
+        text-align: center;
+        display: block;
+      }
+    </style>
+    <iron-ajax
+      auto
+      method="post"
+      url="http://testing.archilogic.com/api/v2"
+      handle-as="json"
+      content-type="application/json"
+      body='{"jsonrpc": "2.0", "id": "YOLO", "method": "Model.list", "params": {"arguments": {}}}'
+      last-response="{{apiResponse}}">
+    </iron-ajax>
+
+    <app-indexeddb-mirror
+        key="models"
+        log="true"
+        data="{{apiResponse}}"
+        persisted-data="{{cachedResponse}}">
+    </app-indexeddb-mirror>
+
+    <template is="dom-repeat" items="[[models]]">
+      <model-tile display-name="[[item.modelDisplayName]]" preview-url="[[item.preview]]"></model-tile>
+    </template>
+  </template>
+  <script>
+  Polymer({
+    is: 'model-list',
+    properties: {
+      apiResponse: 'Object',
+      cachedResponse: 'Object',
+      models: {
+        type: 'Array',
+        computed:'sliceModels(cachedResponse)'
+      }
+    },
+    sliceModels(cachedResponse) {
+      return cachedResponse.result.slice(0, 120)
+    }
+  })
+  </script>
+</dom-module>
